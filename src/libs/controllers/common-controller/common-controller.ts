@@ -1,0 +1,1 @@
+export const image_base64 = 'service/image-base64'
