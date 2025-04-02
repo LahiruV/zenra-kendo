@@ -1,6 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { KendoButton, KendoCard, KendoDate, KendoDropDown } from '@zenra/widgets';
+import { KendoButton, KendoCard, KendoDate, KendoDialog, KendoDropDown, KendoGrid } from '@zenra/widgets';
 import React from 'react';
+import { KendoGridColumn } from 'src/libs/widgets/kendo-grid/kendo-grid';
+
+interface ProductCategory {
+    CategoryID?: number;
+    CategoryName?: string;
+    Description?: string;
+}
+
+interface Product {
+    ProductID: number;
+    ProductName?: string;
+    SupplierID?: number;
+    CategoryID?: number;
+    QuantityPerUnit?: string;
+    UnitPrice?: number;
+    UnitsInStock?: number;
+    UnitsOnOrder?: number;
+    ReorderLevel?: number;
+    Discontinued?: boolean;
+    Category?: ProductCategory;
+    inEdit?: boolean | string;
+}
 
 const HomeComponent: React.FC = () => {
     const sports = [
@@ -24,15 +46,83 @@ const HomeComponent: React.FC = () => {
         { id: 3, name: 'Sam Johnson', position: 'Designer' }
     ];
 
+    const columns2: KendoGridColumn[] = [
+        { field: 'ProductID', title: 'ID', editable: false, filterable: false, width: '75px' },
+        { field: 'ProductName', title: 'Name', editor: 'text' },
+        { field: 'Category.CategoryName', title: 'Category', editable: false, width: '200px' },
+        { field: 'UnitPrice', title: 'Price', editor: 'numeric', width: '150px' },
+        { field: 'UnitsInStock', title: 'In stock', editor: 'numeric', width: '150px' },
+        { field: 'Discontinued', title: 'Discontinued', editor: 'boolean', width: '150px' }
+    ];
+
+    const products = [
+        {
+            ProductID: 1,
+            ProductName: 'Chai',
+            SupplierID: 1,
+            CategoryID: 1,
+            QuantityPerUnit: '10 boxes x 20 bags',
+            UnitPrice: 18.0,
+            UnitsInStock: 39,
+            UnitsOnOrder: 0,
+            ReorderLevel: 10,
+            Discontinued: false,
+            Category: {
+                CategoryID: 1,
+                CategoryName: 'Beverages',
+                Description: 'Soft drinks, coffees, teas, beers, and ales'
+            }
+        },
+        {
+            ProductID: 2,
+            ProductName: 'Chang',
+            SupplierID: 1,
+            CategoryID: 1,
+            QuantityPerUnit: '24 - 12 oz bottles',
+            UnitPrice: 19.0,
+            UnitsInStock: 17,
+            UnitsOnOrder: 40,
+            ReorderLevel: 25,
+            Discontinued: false,
+            Category: {
+                CategoryID: 1,
+                CategoryName: 'Beverages',
+                Description: 'Soft drinks, coffees, teas, beers, and ales'
+            }
+        },
+        {
+            ProductID: 3,
+            ProductName: 'Aniseed Syrup',
+            SupplierID: 1,
+            CategoryID: 2,
+            QuantityPerUnit: '12 - 550 ml bottles',
+            UnitPrice: 10.0,
+            UnitsInStock: 13,
+            UnitsOnOrder: 70,
+            ReorderLevel: 25,
+            Discontinued: false,
+            Category: {
+                CategoryID: 2,
+                CategoryName: 'Condiments',
+                Description: 'Sweet and savory sauces, relishes, spreads, and seasonings'
+            }
+        },
+    ]
+
     const [value, setValue] = React.useState<Date>(new Date());
 
     const handleDateChange = (value: Date | null) => {
         setValue(value || new Date());
     };
 
+    const [visibleDialog, setVisibleDialog] = React.useState(true);
+    const toggleDialog = () => {
+        setVisibleDialog(!visibleDialog);
+    };
+
     return (
         <div>
-            <KendoCard
+            {/* <KendoCard
                 title="Card Title"
                 content={<div>Card Content</div>}
                 actions={<KendoButton
@@ -145,6 +235,24 @@ const HomeComponent: React.FC = () => {
                     />
                 </div>
             </div>
+            <KendoGrid<Product>
+                data={products}
+                columns={columns2}
+                dataItemKey="ProductID"
+            /> */}
+            {/* <KendoDialog
+                type="dialog"
+                title="Please confirm"
+                visible={visibleDialog}
+                onClose={toggleDialog}
+                onConfirm={toggleDialog}
+                confirmText="Confirm"
+                cancelText="Cancel"
+            >
+                <p style={{ margin: '25px', textAlign: 'center' }}>
+                    Are you sure you want to continue?
+                </p>
+            </KendoDialog> */}
         </div>
     );
 };
