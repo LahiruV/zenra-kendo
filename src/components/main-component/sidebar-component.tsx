@@ -3,7 +3,7 @@ import { setRouteTitle } from '@zenra/store';
 import React, { useState } from 'react';
 
 // Interface for props
-export interface SideBarProps {
+export interface DrawerProps {
     isAuthenticated: boolean;
 }
 
@@ -19,7 +19,8 @@ const MenuItemComponent: React.FC<{
     item: MenuItem;
     isSelected: boolean;
     onSelect: (name: string) => void;
-}> = ({ item, isSelected, onSelect }) => {
+    showText: boolean;
+}> = ({ item, isSelected, onSelect, showText }) => {
     return (
         <div
             style={{
@@ -32,26 +33,30 @@ const MenuItemComponent: React.FC<{
                 display: 'flex',
                 alignItems: 'center',
                 transition: 'background-color 0.3s ease',
+                minWidth: showText ? 'auto' : '48px', // Ensure icon-only mode has enough width
             }}
             onClick={() => onSelect(item.name)}
+            title={item.name} // Tooltip for icon-only mode
         >
             <i
                 className={item.iconClass}
-                style={{ width: '16px', height: '16px', marginRight: '10px' }}
+                style={{ width: '16px', height: '16px', marginRight: showText ? '10px' : '0' }}
             />
-            {item.name}
+            {showText && item.name}
         </div>
     );
 };
 
-// Sidebar Component
-const SideBar: React.FC<SideBarProps> = ({ isAuthenticated }) => {
-    const initialService = useInitialService()
-    const [selected, setSelected] = useState<string>('Dashboard')
-    console.log(isAuthenticated, 'isAuthenticated');
+// Drawer Component
+const Drawer: React.FC<DrawerProps> = ({ isAuthenticated }) => {
+    const initialService = useInitialService();
+    const [selected, setSelected] = useState<string>('Dashboard');
+    const [isOpen, setIsOpen] = useState<boolean>(true); // State to control drawer open/close
+
     const handleSelect = (item: string) => {
         initialService.dispatch(setRouteTitle(item));
         setSelected(item);
+        setIsOpen(false); // Close drawer on item selection
     };
 
     const menuItems: MenuItem[] = [
@@ -64,7 +69,7 @@ const SideBar: React.FC<SideBarProps> = ({ isAuthenticated }) => {
         { name: 'Profile', iconClass: 'fas fa-user', requiresAuth: true },
         { name: 'Settings', iconClass: 'fas fa-cog', requiresAuth: true },
         { name: 'Logout', iconClass: 'fas fa-sign-out-alt', requiresAuth: true },
-        { name: 'Login', iconClass: 'fas fa-sign-in-alt', requiresAuth: false }, // Only shown when not authenticated
+        { name: 'Login', iconClass: 'fas fa-sign-in-alt', requiresAuth: false },
     ];
 
     // Filter items based on authentication status
@@ -75,26 +80,73 @@ const SideBar: React.FC<SideBarProps> = ({ isAuthenticated }) => {
     });
 
     return (
-        <div
-            style={{
-                height: '94vh',
-                width: '250px',
-                backgroundColor: '#f8f9fa',
-                boxShadow: '2px 0 5px rgba(0, 0, 0, 0.1)',
-                overflowY: 'auto',
-                fontFamily: 'Arial, sans-serif',
-            }}
-        >
-            {filteredItems.map((item) => (
-                <MenuItemComponent
-                    key={item.name}
-                    item={item}
-                    isSelected={selected === item.name}
-                    onSelect={handleSelect}
+        <>
+            {/* Toggle Button */}
+            <button
+                style={{
+                    position: 'fixed',
+                    top: '10px',
+                    left: isOpen ? '260px' : '60px', // Adjust position based on drawer state
+                    zIndex: 1000,
+                    backgroundColor: '#ff6358',
+                    color: 'white',
+                    border: 'none',
+                    padding: '10px',
+                    cursor: 'pointer',
+                    borderRadius: '4px',
+                    transition: 'left 0.3s ease',
+                }}
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <i className={isOpen ? 'fas fa-times' : 'fas fa-bars'} /> {/* Toggle icon */}
+            </button>
+            {/* Drawer */}
+            <div
+                style={{
+                    height: '100vh',
+                    width: isOpen ? '250px' : '48px', // Narrow width for icons only
+                    backgroundColor: '#f8f9fa',
+                    boxShadow: '2px 0 5px rgba(0, 0, 0, 0.1)',
+                    // position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    overflowX: 'hidden',
+                    overflowY: 'auto',
+                    transition: 'width 0.3s ease',
+                    fontFamily: 'Arial, sans-serif',
+                    zIndex: 999,
+                }}
+            >
+                <div>
+                    {filteredItems.map((item) => (
+                        <MenuItemComponent
+                            key={item.name}
+                            item={item}
+                            isSelected={selected === item.name}
+                            onSelect={handleSelect}
+                            showText={isOpen} // Show text only when open
+                        />
+                    ))}
+                </div>
+            </div>
+
+            {/* Overlay (only when open) */}
+            {isOpen && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                        zIndex: 998,
+                    }}
+                    onClick={() => setIsOpen(false)}
                 />
-            ))}
-        </div>
+            )}
+        </>
     );
 };
 
-export default SideBar;
+export default Drawer;
