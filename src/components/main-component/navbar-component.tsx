@@ -85,13 +85,6 @@ const NavBar: React.FC<NavBarProps> = ({ isAuthenticated }) => {
                     font-size: 18px;
                     margin: 0;
                 }
-                ul {
-                    font-size: 14px;
-                    list-style-type: none;
-                    padding: 0;
-                    margin: 0;
-                    display: flex;
-                }
                 li {
                     margin: 0 10px;
                 }
