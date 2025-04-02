@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import themeReducer from './slices/theme-slice';
 import userReducer from './slices/user-slice';
 import commonReducer from './slices/common-slice';
+import navReducer from './slices/nav-slice';
 
 const persistConfig = {
     key: 'root',
@@ -22,12 +23,14 @@ const persistConfig = {
 const persistedCommonReducer = persistReducer(persistConfig, commonReducer);
 const persistedThemeReducer = persistReducer(persistConfig, themeReducer);
 const persistedUserReducer = persistReducer(persistConfig, userReducer);
+const persistedNavReducer = persistReducer(persistConfig, navReducer);
 
 export const store = configureStore({
     reducer: {
         common: persistedCommonReducer,
         theme: persistedThemeReducer,
         user: persistedUserReducer,
+        nav: persistedNavReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

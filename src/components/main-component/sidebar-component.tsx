@@ -1,6 +1,7 @@
 import { useInitialService } from '@zenra/services';
-import { setRouteTitle } from '@zenra/store';
+import { RootState, setRouteTitle } from '@zenra/store';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 // Interface for props
 export interface DrawerProps {
@@ -79,32 +80,14 @@ const Drawer: React.FC<DrawerProps> = ({ isAuthenticated }) => {
         return true;
     });
 
+    const { drawerToggel } = useSelector((state: RootState) => state.nav);
+
     return (
         <>
-            {/* Toggle Button */}
-            <button
-                style={{
-                    position: 'fixed',
-                    top: '10px',
-                    left: isOpen ? '260px' : '60px', // Adjust position based on drawer state
-                    zIndex: 1000,
-                    backgroundColor: '#ff6358',
-                    color: 'white',
-                    border: 'none',
-                    padding: '10px',
-                    cursor: 'pointer',
-                    borderRadius: '4px',
-                    transition: 'left 0.3s ease',
-                }}
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                <i className={isOpen ? 'fas fa-times' : 'fas fa-bars'} /> {/* Toggle icon */}
-            </button>
-            {/* Drawer */}
             <div
                 style={{
                     height: '100vh',
-                    width: isOpen ? '250px' : '48px', // Narrow width for icons only
+                    width: drawerToggel ? '250px' : '48px', // Narrow width for icons only
                     backgroundColor: '#f8f9fa',
                     boxShadow: '2px 0 5px rgba(0, 0, 0, 0.1)',
                     // position: 'fixed',
@@ -124,27 +107,12 @@ const Drawer: React.FC<DrawerProps> = ({ isAuthenticated }) => {
                             item={item}
                             isSelected={selected === item.name}
                             onSelect={handleSelect}
-                            showText={isOpen} // Show text only when open
+                            showText={drawerToggel} // Show text only when open
                         />
                     ))}
                 </div>
             </div>
 
-            {/* Overlay (only when open) */}
-            {isOpen && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100vw',
-                        height: '100vh',
-                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                        zIndex: 998,
-                    }}
-                    onClick={() => setIsOpen(false)}
-                />
-            )}
         </>
     );
 };
