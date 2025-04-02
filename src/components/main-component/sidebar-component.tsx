@@ -77,7 +77,7 @@ const SideBar: React.FC<SideBarProps> = ({ isAuthenticated }) => {
     return (
         <div
             style={{
-                height: '100vh',
+                height: '94vh',
                 width: '250px',
                 backgroundColor: '#f8f9fa',
                 boxShadow: '2px 0 5px rgba(0, 0, 0, 0.1)',
