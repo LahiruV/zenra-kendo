@@ -5,8 +5,8 @@ import { SVGIcon } from '@progress/kendo-svg-icons';
 type ButtonFillMode = 'flat' | 'outline' | 'clear' | 'link' | 'solid';
 type ButtonThemeColor = 'primary' | 'secondary' | 'tertiary' | 'info' | 'success' | 'warning' | 'error' | 'dark' | 'light' | 'inverse';
 
-// Props for the custom button
 interface CustomKendoButtonProps {
+    className?: string;
     icon?: SVGIcon;
     label: string;
     fillMode?: ButtonFillMode;
@@ -16,6 +16,7 @@ interface CustomKendoButtonProps {
 }
 
 const KendoButton: React.FC<CustomKendoButtonProps> = ({
+    className,
     icon,
     label,
     fillMode = 'solid',
@@ -31,7 +32,7 @@ const KendoButton: React.FC<CustomKendoButtonProps> = ({
             disabled={disabled}
             themeColor={themeColor}
             onClick={onClick}
-            className="custom-kendo-button"
+            className={className}
         >
             {label}
         </Button>
