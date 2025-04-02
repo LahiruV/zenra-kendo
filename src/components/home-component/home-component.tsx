@@ -122,7 +122,7 @@ const HomeComponent: React.FC = () => {
 
     return (
         <div>
-            {/* <KendoCard
+            <KendoCard
                 title="Card Title"
                 content={<div>Card Content</div>}
                 actions={<KendoButton
@@ -239,8 +239,8 @@ const HomeComponent: React.FC = () => {
                 data={products}
                 columns={columns2}
                 dataItemKey="ProductID"
-            /> */}
-            {/* <KendoDialog
+            />
+            <KendoDialog
                 type="dialog"
                 title="Please confirm"
                 visible={visibleDialog}
@@ -252,7 +252,7 @@ const HomeComponent: React.FC = () => {
                 <p style={{ margin: '25px', textAlign: 'center' }}>
                     Are you sure you want to continue?
                 </p>
-            </KendoDialog> */}
+            </KendoDialog>
         </div>
     );
 };
