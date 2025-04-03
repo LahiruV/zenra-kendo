@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AppBar, AppBarSection, AppBarSpacer, Avatar } from '@progress/kendo-react-layout';
 import { Badge, BadgeContainer } from '@progress/kendo-react-indicators';
 import { bellIcon, menuIcon } from '@progress/kendo-svg-icons';
@@ -6,6 +6,8 @@ import { Button } from '@progress/kendo-react-buttons';
 import { company_name } from '@zenra/configs';
 import { useInitialService } from '@zenra/services';
 import { drawerToggel } from '@zenra/store';
+import { reset_redux } from '@zenra/functions';
+import { KendoDialog } from '@zenra/widgets';
 
 const kendokaAvatar = 'https://demos.telerik.com/kendo-react-ui/assets/suite/kendoka-react.png';
 
@@ -15,6 +17,21 @@ export interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ isAuthenticated }) => {
     const initialService = useInitialService();
+    const [visibleDialog, setvisibleDialog] = useState(false);
+
+    const handleSignOut = () => {
+        reset_redux();
+        setvisibleDialog(false);
+        window.location.href = '/';
+    }
+
+    const handleOpen = () => {
+        setvisibleDialog(true);
+    }
+
+    const handleClose = () => {
+        setvisibleDialog(false);
+    }
     console.log(isAuthenticated, 'isAuthenticated');
 
     return (
@@ -59,7 +76,7 @@ const NavBar: React.FC<NavBarProps> = ({ isAuthenticated }) => {
                 <AppBarSpacer />
 
                 <AppBarSection>
-                    <Button className='font-12' type="button" themeColor="primary" size={'small'}>
+                    <Button className='font-12' type="button" themeColor="primary" size={'small'} onClick={handleOpen}>
                         LOGOUT
                     </Button>
                 </AppBarSection>
@@ -101,6 +118,19 @@ const NavBar: React.FC<NavBarProps> = ({ isAuthenticated }) => {
                     margin-right: 8px;
                 }
             `}</style>
+            <KendoDialog
+                type="dialog"
+                title="Please confirm"
+                visible={visibleDialog}
+                onClose={handleClose}
+                onConfirm={handleSignOut}
+                confirmText="Confirm"
+                cancelText="Cancel"
+            >
+                <p style={{ margin: '25px', textAlign: 'center' }}>
+                    Are you sure you want to exit?
+                </p>
+            </KendoDialog>
         </div>
     );
 }

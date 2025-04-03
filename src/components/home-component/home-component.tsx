@@ -115,7 +115,7 @@ const HomeComponent: React.FC = () => {
         setValue(value || new Date());
     };
 
-    const [visibleDialog, setVisibleDialog] = React.useState(true);
+    const [visibleDialog, setVisibleDialog] = React.useState(false);
     const toggleDialog = () => {
         setVisibleDialog(!visibleDialog);
     };
