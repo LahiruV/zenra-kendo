@@ -52,12 +52,10 @@ const MenuItemComponent: React.FC<{
 const Drawer: React.FC<DrawerProps> = ({ isAuthenticated }) => {
     const initialService = useInitialService();
     const [selected, setSelected] = useState<string>('Dashboard');
-    const [isOpen, setIsOpen] = useState<boolean>(true); // State to control drawer open/close
 
     const handleSelect = (item: string) => {
         initialService.dispatch(setRouteTitle(item));
         setSelected(item);
-        setIsOpen(false); // Close drawer on item selection
     };
 
     const menuItems: MenuItem[] = [
