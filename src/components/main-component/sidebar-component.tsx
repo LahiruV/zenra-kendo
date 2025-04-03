@@ -86,7 +86,7 @@ const Drawer: React.FC<DrawerProps> = ({ isAuthenticated }) => {
         <>
             <div
                 style={{
-                    height: '100vh',
+                    height: '94vh',
                     width: drawerToggel ? '250px' : '48px', // Narrow width for icons only
                     backgroundColor: '#f8f9fa',
                     boxShadow: '2px 0 5px rgba(0, 0, 0, 0.1)',
