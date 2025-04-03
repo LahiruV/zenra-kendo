@@ -12,11 +12,11 @@ export const navSlice = createSlice({
     name: 'nav',
     initialState,
     reducers: {
-        setDrawerToggel: (state, action) => {
-            state.drawerToggel = action.payload;
-        }
+        drawerToggel: (state) => {
+            state.drawerToggel = !state.drawerToggel;
+        },
     },
 });
 
-export const { setDrawerToggel } = navSlice.actions;
+export const { drawerToggel } = navSlice.actions;
 export default navSlice.reducer;

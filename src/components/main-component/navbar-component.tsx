@@ -4,8 +4,8 @@ import { Badge, BadgeContainer } from '@progress/kendo-react-indicators';
 import { bellIcon, menuIcon } from '@progress/kendo-svg-icons';
 import { Button } from '@progress/kendo-react-buttons';
 import { company_name } from '@zenra/configs';
-import { setDrawerToggel } from '@zenra/store';
 import { useInitialService } from '@zenra/services';
+import { drawerToggel } from '@zenra/store';
 
 const kendokaAvatar = 'https://demos.telerik.com/kendo-react-ui/assets/suite/kendoka-react.png';
 
@@ -30,7 +30,7 @@ const NavBar: React.FC<NavBarProps> = ({ isAuthenticated }) => {
             <AppBar themeColor="dark">
                 <AppBarSection>
                     <Button type="button" fillMode="flat" svgIcon={menuIcon} onClick={() =>
-                        initialService.dispatch(setDrawerToggel(true))
+                        initialService.dispatch(drawerToggel())
                     } />
                 </AppBarSection>
 
